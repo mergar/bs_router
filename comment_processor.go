@@ -66,7 +66,7 @@ func DoProcess(comment *Comment, logdir string) (error, *CbsdTask) {
 	Infof("broker log did: %s\n", logdir)
 	CreateDirIfNotExist(logdir)
 
-	filePath := fmt.Sprintf("log/%s_%s_%d.txt", dt.Format(time.RFC3339), comment.Command, comment.JobID)
+	filePath := fmt.Sprintf("%s/%s_%s_%d.txt", logdir, dt.Format(time.RFC3339), comment.Command, comment.JobID)
 	commentFile, err := os.Create(filePath)
 	if err != nil {
 		return err, nil
@@ -90,7 +90,7 @@ func DoProcess(comment *Comment, logdir string) (error, *CbsdTask) {
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
 
-	filePath = fmt.Sprintf("log/%d.txt", comment.JobID)
+	filePath = fmt.Sprintf("%s/%d.txt", logdir, comment.JobID)
 
 	stdoutFile, err := os.Create(filePath)
 	if err != nil {
@@ -154,7 +154,7 @@ func DoProcess(comment *Comment, logdir string) (error, *CbsdTask) {
 
 	cbsdTask.Guid = string(vm_guid)
 	cbsdTask.DskGuid = string(dsk_guid)
-	fileLogPath := fmt.Sprintf("log/%d.txt", comment.JobID)
+	fileLogPath := fmt.Sprintf("%s/%d.txt", logdir, comment.JobID)
 
 	b, err := ioutil.ReadFile(fileLogPath) // just pass the file name
 	if err != nil {
